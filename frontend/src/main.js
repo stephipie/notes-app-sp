@@ -1,4 +1,5 @@
 import "./style.css";
+const API_URL = 'http://localhost:8080/'
 const modal = document.querySelector("#modal");
 const resetBtn = document.querySelector("#dismiss");
 const addBtn = document.querySelector("#add");
@@ -17,7 +18,7 @@ resetBtn.addEventListener("click", () => {
 
 // fetch data from API
 const fetchNotes = async () => {
-  const res = await fetch("http://localhost:3000/notes");
+  const res = await fetch(`${API_URL}notes`);
   const data = await res.json();
   //console.log(data);
   renderNotes(data);
@@ -40,7 +41,7 @@ const renderNotes = async (data) => {
     <span class="text-sm">${month}</span>
     </div>
     <div>
-    <h3 class="text-xs text-slate-700">${note.autor}</h3>
+    <h3 class="text-xs text-slate-700">${note.author}</h3>
     <p class="font-semibold text-gray-800">
     ${note.note}
     </p>
@@ -68,10 +69,30 @@ const renderNotes = async (data) => {
 
 
 // Add new note or edit existing note
-form.addEventListener("submit", async (e) => {});
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const note = document.getElementById('note').value;
+  const author = document.getElementById('author').value;
+  const date = new Date();
+  const formData = {
+    note: note,
+    author: author,
+    date: date
+  }
+  addNote(formData);
+});
 
 // Add new note
-const addNote = async (note) => {};
+const addNote = async (note) => {
+  const response = await fetch(`${API_URL}notes`,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(note)
+  })
+
+};
 
 // Edit existing note
 const editNote = async (note) => {};
