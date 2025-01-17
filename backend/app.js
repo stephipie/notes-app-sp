@@ -44,7 +44,7 @@ app.get("/notes/:id", (request, response) => {
 });
 
 app.post("/notes", (request, response) => {
-  const lastId = notes[notes.length - 1].id;
+  const lastId = notes.length > 0 ? notes[notes.length - 1].id : 0;
   const newNote = {
     id: lastId + 1,
     note: request.body.note,

@@ -73,6 +73,10 @@ const renderNotes = async (data) => {
         document.querySelector("#author").value = note.author;
         modal.classList.toggle("hidden");
       });
+      const deleteBtn = flyout.querySelector("li:nth-child(2)");
+      deleteBtn.addEventListener("click", () => {
+        deleteNote(note.id);
+      });
     });
   });
 };
@@ -128,7 +132,21 @@ const editNote = async (note, id) => {
 };
 
 // Delete note
-const deleteNote = async (id) => {};
+const deleteNote = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}notes/${id}`, {
+      method: "DELETE",
+    });
+    const notes = await response.json();
+    renderNotes(notes);
+  
+} catch (error) {
+    console.error(error);
+  }
+
+ };
+
+  
 
 // init app
 fetchNotes();
