@@ -5,6 +5,8 @@ const resetBtn = document.querySelector("#dismiss");
 const addBtn = document.querySelector("#add");
 const notes = document.querySelector("#notes");
 
+let edittedNote = false;
+let edittedNoteId = null;
 
 // Show / Hide modal
 addBtn.addEventListener("click", () => {
@@ -63,6 +65,14 @@ const renderNotes = async (data) => {
       const parent = flyoutBtn.closest(".relative");
       const flyout = parent.querySelector(".flyout");
       flyout.classList.toggle("hidden");
+      const editBtn = flyout.querySelector("li:nth-child(1)");
+      editBtn.addEventListener("click", () => {
+        edittedNote = true;
+        edittedNoteId = note.id;
+        document.querySelector("#note").value = note.note;
+        document.querySelector("#author").value = note.author;
+        modal.classList.toggle("hidden");
+      });
     });
   });
 };
@@ -79,7 +89,12 @@ form.addEventListener("submit", async (e) => {
     author: author,
     date: date
   }
-  addNote(formData);
+  if (edittedNote) {
+    editNote(formData, edittedNoteId);
+    edittedNote = false;
+  } else {
+    addNote(formData);
+  }
 });
 
 // Add new note
@@ -91,11 +106,26 @@ const addNote = async (note) => {
     },
     body: JSON.stringify(note)
   })
+  const notes = await response.json();
+  renderNotes(notes);
+  modal.classList.toggle("hidden");
 
 };
 
 // Edit existing note
-const editNote = async (note) => {};
+const editNote = async (note, id) => {
+  console.log(note);
+  const response = await fetch(`${API_URL}notes/${id}`,{
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(note)
+  })
+  const notes = await response.json();
+  renderNotes(notes);
+  modal.classList.toggle("hidden");
+};
 
 // Delete note
 const deleteNote = async (id) => {};

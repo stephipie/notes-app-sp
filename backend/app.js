@@ -62,7 +62,7 @@ app.put("/notes/:id", (request, response) => {
     note.note = request.body.note;
     note.author = request.body.author;
     note.date = request.body.date;
-    response.json(note);
+    response.json(notes);
   } else {
     response.status(404).json({ message: `Note with id ${id} not found` });
   }
