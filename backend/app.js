@@ -8,7 +8,7 @@ app.use(express.json());
 
 // Middleware cors
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "http://20.79.183.124",
 };
 app.use(cors(corsOptions));
 

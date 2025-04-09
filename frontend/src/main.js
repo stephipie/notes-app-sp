@@ -1,5 +1,5 @@
 import "./style.css";
-const API_URL = 'http://localhost:8080/'
+const API_URL = import.meta.env.VITE_API_URL ||'http://localhost:8080/'
 const modal = document.querySelector("#modal");
 const resetBtn = document.querySelector("#dismiss");
 const addBtn = document.querySelector("#add");
